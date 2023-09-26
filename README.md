@@ -1,1 +1,1 @@
-# spring-petclinic-app-k8s-terraform
+# spring-petclinic-app-k8s
