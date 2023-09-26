@@ -6,13 +6,38 @@ metadata:
     app: api-gateway
   name: api-gateway
   namespace: {{ .Values.namespace }}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-tls-cert: arn:aws:acm:eu-west-3:296615500438:certificate/8391ef57-98c5-478c-9a06-53f663bc01f6
+    service.beta.kubernetes.io/aws-load-balancer-tls-ports: "https"
 spec:
-  ports:
-  - name: "http"
-    port: 80
-    targetPort: 8080
   selector:
     app: api-gateway
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: https
+    port: 443
+    targetPort: 8080
   type: LoadBalancer
 status:
   loadBalancer: {}
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   labels:
+#     app: api-gateway
+#   name: api-gateway
+#   namespace: {{ .Values.namespace }}
+# spec:
+#   ports:
+#   - name: "http"
+#     port: 80
+#     targetPort: 8080
+#   selector:
+#     app: api-gateway
+#   type: LoadBalancer
+# status:
+#   loadBalancer: {}

@@ -8,21 +8,16 @@ provider "helm" {
   }
 }
 
-resource "kubernetes_namespace" "qa" {
+resource "kubernetes_namespace" "ns" {
   metadata {
-    name = "qa"
+    name = var.namespace
   }
-}
-
-variable "mysql_root_password" {
-  description = "The MySQL root password."
-  default     = "password" // Remplacez par la valeur souhaitée
 }
 
 resource "kubernetes_secret" "customers_db_mysql" {
   metadata {
     name      = "customers-db-mysql"
-    namespace = kubernetes_namespace.qa.metadata[0].name
+    namespace = var.namespace
   }
 
   data = {
@@ -35,7 +30,7 @@ resource "kubernetes_secret" "customers_db_mysql" {
 resource "kubernetes_secret" "vets_db_mysql" {
   metadata {
     name      = "vets-db-mysql"
-    namespace = kubernetes_namespace.qa.metadata[0].name
+    namespace = var.namespace
   }
 
   data = {
@@ -48,7 +43,7 @@ resource "kubernetes_secret" "vets_db_mysql" {
 resource "kubernetes_secret" "visits_db_mysql" {
   metadata {
     name      = "visits-db-mysql"
-    namespace = kubernetes_namespace.qa.metadata[0].name
+    namespace = var.namespace
   }
 
   data = {
@@ -60,7 +55,7 @@ resource "kubernetes_secret" "visits_db_mysql" {
 
 resource "helm_release" "my_release" {
   name      = "my-release" // Nom de la release Helm
-  namespace = kubernetes_namespace.qa.metadata[0].name
+  namespace = var.namespace
   chart     = "./spring-petclinic-chart" // Chemin relatif vers le dossier du chart Helm
   version   = "1.0.0" // Version du Helm chart à déployer
   
@@ -73,4 +68,16 @@ resource "helm_release" "my_release" {
     value = var.repository_prefix
   }
   values = [file("./spring-petclinic-chart/values.yaml")] // Chemin relatif vers le fichier values.yaml
+}
+
+data "kubernetes_service" "api_gateway" {
+  depends_on = [helm_release.my_release]
+  metadata {
+    name      = "api-gateway"
+    namespace = var.namespace
+  }
+}
+
+output "api_gateway_url" {
+  value = data.kubernetes_service.api_gateway.status[0].load_balancer[0].ingress[0].hostname != null ? data.kubernetes_service.api_gateway.status[0].load_balancer[0].ingress[0].hostname : "Hostname not available"
 }

@@ -9,3 +9,7 @@ variable "repository_prefix" {
   type        = string
   default     = "ardhmd"
 }
+
+variable "mysql_root_password" {
+  description = "The MySQL root password."
+}
