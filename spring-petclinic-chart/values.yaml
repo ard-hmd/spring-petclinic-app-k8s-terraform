@@ -1,5 +1,5 @@
 namespace: ""
-repository_prefix: ""
+repository_prefix: "ardhmd"
 
 dbhost_visits: cgtn3gql0yfa.eu-west-3.rds.amazonaws.com:3306
 dbname_visits: visitsdb
