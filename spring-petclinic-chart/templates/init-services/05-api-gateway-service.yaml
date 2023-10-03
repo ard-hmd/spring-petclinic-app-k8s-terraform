@@ -23,15 +23,15 @@ metadata:
   namespace: {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/subnets: subnet-04ba969ec5319451e,subnet-001849355a55afccd
+    alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-3:414147595918:certificate/bb7e117b-ba23-4c36-aee1-d6d6fb1a384c
+    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.certificateArn }}
     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
 spec:
   rules:
-  - host: www.ahermand.fr
+  - host: {{ .Values.ingress.host }}
     http:
       paths:
       - path: /

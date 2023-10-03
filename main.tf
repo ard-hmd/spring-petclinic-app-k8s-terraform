@@ -84,7 +84,7 @@ data "kubernetes_service" "api_gateway" {
   }
 }
 
-# Output the hostname of the API Gateway service, if available
-# output "api_gateway_url" {
-#   value = data.kubernetes_service.api_gateway.status[0].load_balancer[0].ingress[0].hostname != null ? data.kubernetes_service.api_gateway.status[0].load_balancer[0].ingress[0].hostname : "Hostname not available"
-# }
+# # Output the hostname of the API Gateway service, if available
+# # output "api_gateway_url" {
+# #   value = data.kubernetes_service.api_gateway.status[0].load_balancer[0].ingress[0].hostname != null ? data.kubernetes_service.api_gateway.status[0].load_balancer[0].ingress[0].hostname : "Hostname not available"
+# # }

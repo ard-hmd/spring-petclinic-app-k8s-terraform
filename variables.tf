@@ -12,4 +12,6 @@ variable "repository_prefix" {
 
 variable "mysql_root_password" {
   description = "The MySQL root password."
+  type        = string
+  sensitive   = true
 }

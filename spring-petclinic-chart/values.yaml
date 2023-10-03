@@ -12,3 +12,9 @@ dbuser_customers: admin
 dbhost_vets: cgtn3gql0yfa.eu-west-3.rds.amazonaws.com:3306
 dbname_vets: vetsdb
 dbuser_vets: admin
+
+ingress:
+  subnets: "subnet-04ba969ec5319451e,subnet-001849355a55afccd"
+  certificateArn: "arn:aws:acm:eu-west-3:414147595918:certificate/bb7e117b-ba23-4c36-aee1-d6d6fb1a384c"
+  host: www.ahermand.fr
+
