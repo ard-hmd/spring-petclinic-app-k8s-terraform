@@ -176,3 +176,17 @@ resource "helm_release" "my_release" {
   depends_on = [helm_release.alb_controller]
 }
 
+resource "null_resource" "sleep" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "sleep 120"
+  }
+  depends_on = [helm_release.alb_controller]
+}
+
+module "example" {
+  source = "./modules/aws-route53-module"
+}
