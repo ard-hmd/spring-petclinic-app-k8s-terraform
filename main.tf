@@ -1,18 +1,3 @@
-# Provider configurations
-provider "kubernetes" {
-  config_path = var.kube_config_path
-}
-
-provider "helm" {
-  kubernetes {
-    config_path = var.kube_config_path
-  }
-}
-
-provider "aws" {
-  region = var.aws_region
-}
-
 # Module for AWS ALB Controller
 module "alb_controller_module" {
   source = "./modules/aws-alb-controller-module"
@@ -70,7 +55,7 @@ resource "null_resource" "sleep" {
 }
 
 # Module for managing AWS Route53 records
-module "route53" {
+module "aws_route53_module" {
   source = "./modules/aws-route53-module"
 
   # Variables specific to the aws-route53-module
