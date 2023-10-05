@@ -32,9 +32,9 @@ resource "aws_iam_policy" "alb_controller" {
 }
 
 resource "aws_iam_role" "alb_controller" {
-  name               = "AmazonEKSLoadBalancerControllerRole"
+  name = "AmazonEKSLoadBalancerControllerRole"
   assume_role_policy = templatefile("${path.module}/load-balancer-role-trust-policy.json.tpl", {
-    oidc_id       = local.oidc_id,
+    oidc_id        = local.oidc_id,
     aws_account_id = local.aws_account_id
   })
 }
@@ -48,8 +48,8 @@ resource "aws_iam_role_policy_attachment" "alb_controller" {
 # Création du ServiceAccount Kubernetes pour le contrôleur ALB
 resource "kubernetes_service_account" "alb_controller" {
   metadata {
-    name        = "aws-load-balancer-controller"
-    namespace   = "kube-system"
+    name      = "aws-load-balancer-controller"
+    namespace = "kube-system"
     annotations = {
       "eks.amazonaws.com/role-arn" = aws_iam_role.alb_controller.arn
     }
@@ -81,7 +81,7 @@ resource "helm_release" "alb_controller" {
 
 data "aws_vpc" "existing_vpc" {
   filter {
-    name   = "tag:Name" # Remplacez par le nom de la balise appropriée si nécessaire
+    name   = "tag:Name"   # Remplacez par le nom de la balise appropriée si nécessaire
     values = ["prod-vpc"] # Remplacez par le nom de votre VPC
   }
 }
@@ -161,13 +161,13 @@ resource "helm_release" "my_release" {
   namespace = var.namespace
   chart     = "./spring-petclinic-chart"
   version   = "1.0.0"
-  
+
   set {
     name  = "namespace"
     value = var.namespace
   }
   set {
-    name = "ingress.subnets"
+    name  = "ingress.subnets"
     value = join("\\,", local.all_public_subnets)
   }
 
@@ -176,17 +176,12 @@ resource "helm_release" "my_release" {
   depends_on = [helm_release.alb_controller]
 }
 
-resource "null_resource" "sleep" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command = "sleep 120"
-  }
-  depends_on = [helm_release.alb_controller]
-}
-
-module "example" {
+module "route53" {
   source = "./modules/aws-route53-module"
+
+  alb_name    = "mon-alb-petclinic"
+  domain_name = "ahermand.fr."
+  record_name = "www"
+
+  depends_on = [helm_release.my_release]
 }

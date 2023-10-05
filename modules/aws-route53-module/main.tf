@@ -1,20 +1,19 @@
+# Retrieve information about the Application Load Balancer (ALB) with the specified tag.
 data "aws_lb" "this" {
   tags = {
-    Name = "mon-alb-petclinic"
+    Name = var.alb_name
   }
 }
 
+# Retrieve information about the Route 53 hosted zone with the specified name.
 data "aws_route53_zone" "selected" {
-  name = "ahermand.fr." # Remplacez par le nom de votre domaine
+  name = var.domain_name
 }
 
-output "zone_id" {
-  value = data.aws_route53_zone.selected.zone_id
-}
-
+# Define a Route 53 record pointing to the ALB.
 resource "aws_route53_record" "alb_record" {
   zone_id = data.aws_route53_zone.selected.zone_id
-  name    = "www.ahermand.fr."
+  name    = var.record_name
   type    = "A"
 
   alias {
