@@ -1,20 +1,41 @@
-namespace: ""
-repository_prefix: "ardhmd"
+# Namespace where the application will be deployed
+namespace: "qa"
 
-dbhost_visits: cgtn3gql0yfa.eu-west-3.rds.amazonaws.com:3306
-dbname_visits: visitsdb
-dbuser_visits: admin
+# Prefix for the repository where Helm charts are hosted
+repository_prefix: "myapp"
 
-dbhost_customers: cgtn3gql0yfa.eu-west-3.rds.amazonaws.com:3306
-dbname_customers: customersdb
-dbuser_customers: admin
+visits:
+  # Hostname or IP address of the database server for the 'visits' service
+  dbhost: "visits-db-host"
+  # Name of the database for the 'visits' service
+  dbname: "visits-db-name"
+  # Username for connecting to the 'visits' database
+  dbuser: "visits-db-user"
 
-dbhost_vets: cgtn3gql0yfa.eu-west-3.rds.amazonaws.com:3306
-dbname_vets: vetsdb
-dbuser_vets: admin
+customers:
+  # Hostname or IP address of the database server for the 'customers' service
+  dbhost: "customers-db-host"
+  # Name of the database for the 'customers' service
+  dbname: "customers-db-name"
+  # Username for connecting to the 'customers' database
+  dbuser: "customers-db-user"
+
+vets:
+  # Hostname or IP address of the database server for the 'vets' service
+  dbhost: "vets-db-host"
+  # Name of the database for the 'vets' service
+  dbname: "vets-db-name"
+  # Username for connecting to the 'vets' database
+  dbuser: "vets-db-user"
+
+alb:
+  # Tags to associate with the Application Load Balancer
+  tags: "Name=alb-name"
 
 ingress:
-  subnets: ""
-  certificateArn: "arn:aws:acm:eu-west-3:414147595918:certificate/bb7e117b-ba23-4c36-aee1-d6d6fb1a384c"
-  host: "www.ahermand.fr"
-
+  # Subnets for the ingress controller
+  subnets: "subnet-12345678,subnet-23456789"
+  # ACM certificate ARN for HTTPS
+  certificateArn: "arn:aws:acm:us-west-2:123456789012:certificate/abcd1234-5678-90ab-cdef-1234567890ab"
+  # Hostname for the ingress controller
+  host: "petclinic.example.com"

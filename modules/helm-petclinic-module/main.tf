@@ -89,10 +89,75 @@ resource "helm_release" "my_release" {
     name  = "namespace"
     value = var.namespace
   }
+  
+  set {
+    name  = "alb.tags"
+    value = "Name=${var.alb_name}"
+  }
+
+  set {
+    name  = "repository_prefix"
+    value = var.repository_prefix
+  }
+
+  set {
+    name  = "ingress.host"
+    value = var.fqdn
+  }
+
+  set {
+    name  = "ingress.certificateArn"
+    value = var.certificateArn
+  }
+
   set {
     name  = "ingress.subnets"
     value = join("\\,", local.all_public_subnets)
   }
 
+  set {
+    name  = "visits.dbhost"
+    value = var.visits_dbhost
+  }
+
+  set {
+    name  = "visits.dbname"
+    value = var.visits_dbname
+  }
+
+  set {
+    name  = "visits.dbuser"
+    value = var.visits_dbuser
+  }
+
+  set {
+    name  = "customers.dbhost"
+    value = var.customers_dbhost
+  }
+
+  set {
+    name  = "customers.dbname"
+    value = var.customers_dbname
+  }
+
+  set {
+    name  = "customers.dbuser"
+    value = var.customers_dbuser
+  }
+
+  set {
+    name  = "vets.dbhost"
+    value = var.vets_dbhost
+  }
+
+  set {
+    name  = "vets.dbname"
+    value = var.vets_dbname
+  }
+
+  set {
+    name  = "vets.dbuser"
+    value = var.vets_dbuser
+  }
   values = [file(var.helm_values_file)]
 }
