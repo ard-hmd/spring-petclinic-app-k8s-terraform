@@ -9,80 +9,21 @@ provider "helm" {
 }
 
 provider "aws" {
-  region = "eu-west-3" # Remplacez par votre région AWS si elle est différente
+  region = "eu-west-3"
 }
 
-data "aws_caller_identity" "current" {}
+module "alb_controller_module" {
+  source = "./modules/aws-alb-controller-module"
 
-data "aws_eks_cluster" "selected" {
-  name = "eks-cluster-spring-petclinic"
+  eks_cluster_name         = "eks-cluster-spring-petclinic"
+  alb_controller_role_name = "AmazonEKSLoadBalancerControllerRole"
+  alb_controller_version   = "1.6.1"
 }
-
-locals {
-  aws_account_id = data.aws_caller_identity.current.account_id
-  oidc_split     = split("/", data.aws_eks_cluster.selected.identity[0].oidc[0].issuer)
-  oidc_id        = local.oidc_split[length(local.oidc_split) - 1]
-}
-
-# Création de la politique IAM pour le contrôleur ALB
-resource "aws_iam_policy" "alb_controller" {
-  name        = "AWSLoadBalancerControllerIAMPolicy"
-  description = "Policy for AWS Load Balancer Controller"
-  policy      = file("${path.module}/iam_policy.json") # Assurez-vous que le fichier iam_policy.json est dans le même répertoire que votre fichier Terraform
-}
-
-resource "aws_iam_role" "alb_controller" {
-  name = "AmazonEKSLoadBalancerControllerRole"
-  assume_role_policy = templatefile("${path.module}/load-balancer-role-trust-policy.json.tpl", {
-    oidc_id        = local.oidc_id,
-    aws_account_id = local.aws_account_id
-  })
-}
-
-# Attachement de la politique au rôle
-resource "aws_iam_role_policy_attachment" "alb_controller" {
-  policy_arn = aws_iam_policy.alb_controller.arn
-  role       = aws_iam_role.alb_controller.name
-}
-
-# Création du ServiceAccount Kubernetes pour le contrôleur ALB
-resource "kubernetes_service_account" "alb_controller" {
-  metadata {
-    name      = "aws-load-balancer-controller"
-    namespace = "kube-system"
-    annotations = {
-      "eks.amazonaws.com/role-arn" = aws_iam_role.alb_controller.arn
-    }
-  }
-}
-
-# Déploiement du contrôleur ALB en utilisant Helm
-resource "helm_release" "alb_controller" {
-  name       = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  version    = "1.6.1" # Vérifiez pour la version la plus récente
-
-  set {
-    name  = "clusterName"
-    value = "eks-cluster-spring-petclinic" # Remplacez par le nom de votre cluster EKS
-  }
-  set {
-    name  = "serviceAccount.create"
-    value = "false"
-  }
-  set {
-    name  = "serviceAccount.name"
-    value = kubernetes_service_account.alb_controller.metadata[0].name
-  }
-}
-
 
 data "aws_vpc" "existing_vpc" {
   filter {
-    name   = "tag:Name"   # Remplacez par le nom de la balise appropriée si nécessaire
-    values = ["prod-vpc"] # Remplacez par le nom de votre VPC
+    name   = "tag:Name"
+    values = ["prod-vpc"]
   }
 }
 
@@ -173,7 +114,18 @@ resource "helm_release" "my_release" {
 
   values = [file("./spring-petclinic-chart/values.yaml")]
 
-  depends_on = [helm_release.alb_controller]
+  depends_on = [module.alb_controller_module]
+}
+
+resource "null_resource" "sleep" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "sleep 60"
+  }
+  depends_on = [module.alb_controller_module]
 }
 
 module "route53" {
