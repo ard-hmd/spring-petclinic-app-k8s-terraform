@@ -11,11 +11,12 @@ This repository contains the Terraform configuration to deploy the Spring PetCli
 
 ## Initial Setup
 1. Ensure you have an operational EKS cluster with at least 2 Availability Zones.
-2. Ensure you have Terraform and `kubectl` installed.
-3. Clone this repository.
-4. Set up your AWS credentials or ensure your environment can access AWS.
-5. Create a `secret.tfvars` file to specify sensitive passwords, like the MySQL root password.
-6. Configure your variables in the `terraform.tfvars` file. An example of this file with placeholder values is provided below.
+2. Ensure you have an AWS Certificate Manager (ACM) certificate available for use.
+3. Ensure you have Terraform and `kubectl` installed.
+4. Clone this repository.
+5. Set up your AWS credentials or ensure your environment can access AWS.
+6. Create a `secret.tfvars` file to specify sensitive passwords, like the MySQL root password.
+7. Configure your variables in the `terraform.tfvars` file. An example of this file with placeholder values and comments is provided below.
 
 ## Configuration Variables
 
