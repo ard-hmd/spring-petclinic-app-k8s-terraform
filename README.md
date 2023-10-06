@@ -27,28 +27,28 @@ This repository contains the Terraform configuration to deploy the Spring PetCli
 - `alb_controller_version`: Version of the ALB Controller.
 
 ### AWS ALB Controller Module:
-- `eks_cluster_name`: Name of the EKS cluster. (Example: `example-eks-cluster`)
-- `alb_controller_role_name`: Name of the ALB Controller IAM role. (Example: `example-ALB-role`)
-- `alb_controller_version`: Version of the ALB Controller. (Example: `1.0.0`)
+- `eks_cluster_name`: Name of the EKS cluster.
+- `alb_controller_role_name`: Name of the ALB Controller IAM role.
+- `alb_controller_version`: Version of the ALB Controller.
 
 ### Helm PetClinic Module:
-- `vpc_name`: Name of the VPC to use. (Example: `example-vpc`)
-- `az_a_subnet_name`: Name of the subnet in Availability Zone A. (Example: `example-subnet-a`)
-- `az_b_subnet_name`: Name of the subnet in Availability Zone B. (Example: `example-subnet-b`)
-- `namespace`: Kubernetes namespace for the Helm release. (Example: `example-namespace`)
-- `mysql_root_password`: MySQL root password. (Example: `example-password`)
-- `helm_chart_version`: Version of the Helm chart. (Example: `1.0.0`)
-- `helm_chart_path`: Path to the Helm chart. (Example: `./example-chart-path`)
-- `helm_values_file`: Path to the Helm values file. (Example: `./example-values-path`)
-- `helm_release_name`: Name of the Helm release. (Example: `example-release`)
-- `repository_prefix`: Prefix for the registry repository. (Example: `example-prefix`)
-- `fqdn`: Fully qualified domain name. (Example: `example.com`)
-- `certificateArn`: ARN of the ACM certificate. (Example: `arn:aws:acm:example-region:123456789012:certificate/example-id`)
+- `vpc_name`: Name of the VPC to use.
+- `az_a_subnet_name`: Name of the subnet in Availability Zone A.
+- `az_b_subnet_name`: Name of the subnet in Availability Zone B.
+- `namespace`: Kubernetes namespace for the Helm release.
+- `mysql_root_password`: MySQL root password.
+- `helm_chart_version`: Version of the Helm chart.
+- `helm_chart_path`: Path to the Helm chart.
+- `helm_values_file`: Path to the Helm values file.
+- `helm_release_name`: Name of the Helm release.
+- `repository_prefix`: Prefix for the registry repository.
+- `fqdn`: Fully qualified domain name.
+- `certificateArn`: ARN of the ACM certificate.
 
 ### AWS Route53 Module:
-- `alb_name`: Name of the Application Load Balancer (ALB). (Example: `example-alb`)
-- `domain_name`: Domain name for Route53. (Example: `example.com.`)
-- `record_name`: Name of the DNS record. (Example: `www`)
+- `alb_name`: Name of the Application Load Balancer (ALB).
+- `domain_name`: Domain name for Route53.
+- `record_name`: Name of the DNS record.
 
 ### Example `terraform.tfvars` file:
 ```
