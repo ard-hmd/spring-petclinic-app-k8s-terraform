@@ -1,8 +1,6 @@
-#
-# Global
-#
 variable "namespace" {
-  description = "Name of the Kubernetes namespace"
+  description = "List of Kubernetes namespace names"
+  type        = list(string)
 }
 
 variable "vpc_name" {
@@ -25,9 +23,6 @@ variable "mysql_root_password" {
   description = "Root password for MySQL used in various databases"
 }
 
-#
-# API GATEWAY SERVICE
-#
 variable "api_gateway_service_release_name" {
   description = "Name of the Helm release for the Spring PetClinic API Gateway service"
 }
@@ -49,16 +44,13 @@ variable "alb_name" {
 }
 
 variable "fqdn" {
-  description = "Fully Qualified Domain Name"
+  description = "Base Fully Qualified Domain Name"
 }
 
 variable "certificateArn" {
   description = "ARN of the ACM certificate"
 }
 
-#
-# CUSTOMERS SERVICE
-#
 variable "customers_service_release_name" {
   description = "Name of the Helm release for the Spring PetClinic Customers service"
 }
@@ -87,9 +79,6 @@ variable "customers_dbuser" {
   description = "Database user for the Customers service"
 }
 
-#
-# VISITS SERVICE
-#
 variable "visits_service_release_name" {
   description = "Name of the Helm release for the Spring PetClinic Visits service"
 }
@@ -118,9 +107,6 @@ variable "visits_dbuser" {
   description = "Database user for the Visits service"
 }
 
-#
-# VETS SERVICE
-#
 variable "vets_service_release_name" {
   description = "Name of the Helm release for the Spring PetClinic Vets service"
 }
@@ -148,3 +134,155 @@ variable "vets_dbname" {
 variable "vets_dbuser" {
   description = "Database user for the Vets service"
 }
+
+
+# #
+# # Global
+# #
+# variable "namespace" {
+#   description = "Name of the Kubernetes namespace"
+# }
+
+# variable "vpc_name" {
+#   description = "Name of the VPC to search for"
+# }
+
+# variable "az_a_subnet_name" {
+#   description = "Name of the public subnet in Availability Zone A"
+# }
+
+# variable "az_b_subnet_name" {
+#   description = "Name of the public subnet in Availability Zone B"
+# }
+
+# variable "repository_prefix" {
+#   description = "Prefix for the Docker registry repository"
+# }
+
+# variable "mysql_root_password" {
+#   description = "Root password for MySQL used in various databases"
+# }
+
+# #
+# # API GATEWAY SERVICE
+# #
+# variable "api_gateway_service_release_name" {
+#   description = "Name of the Helm release for the Spring PetClinic API Gateway service"
+# }
+
+# variable "api_gateway_service_chart_path" {
+#   description = "Path to the Helm chart for the Spring PetClinic API Gateway service"
+# }
+
+# variable "api_gateway_service_chart_version" {
+#   description = "Version of the Helm chart to use for deploying the Spring PetClinic API Gateway service"
+# }
+
+# variable "api_gateway_service_values_file" {
+#   description = "Path to the Helm values.yaml file for the Spring PetClinic API Gateway service"
+# }
+
+# variable "alb_name" {
+#   description = "Name of the Application Load Balancer"
+# }
+
+# variable "fqdn" {
+#   description = "Fully Qualified Domain Name"
+# }
+
+# variable "certificateArn" {
+#   description = "ARN of the ACM certificate"
+# }
+
+# #
+# # CUSTOMERS SERVICE
+# #
+# variable "customers_service_release_name" {
+#   description = "Name of the Helm release for the Spring PetClinic Customers service"
+# }
+
+# variable "customers_service_chart_path" {
+#   description = "Path to the Helm chart for the Spring PetClinic Customers service"
+# }
+
+# variable "customers_service_chart_version" {
+#   description = "Version of the Helm chart to use for deploying the Spring PetClinic Customers service"
+# }
+
+# variable "customers_service_values_file" {
+#   description = "Path to the Helm values.yaml file for the Spring PetClinic Customers service"
+# }
+
+# variable "customers_dbhost" {
+#   description = "Database host for the Customers service"
+# }
+
+# variable "customers_dbname" {
+#   description = "Database name for the Customers service"
+# }
+
+# variable "customers_dbuser" {
+#   description = "Database user for the Customers service"
+# }
+
+# #
+# # VISITS SERVICE
+# #
+# variable "visits_service_release_name" {
+#   description = "Name of the Helm release for the Spring PetClinic Visits service"
+# }
+
+# variable "visits_service_chart_path" {
+#   description = "Path to the Helm chart for the Spring PetClinic Visits service"
+# }
+
+# variable "visits_service_chart_version" {
+#   description = "Version of the Helm chart to use for deploying the Spring PetClinic Visits service"
+# }
+
+# variable "visits_service_values_file" {
+#   description = "Path to the Helm values.yaml file for the Spring PetClinic Visits service"
+# }
+
+# variable "visits_dbhost" {
+#   description = "Database host for the Visits service"
+# }
+
+# variable "visits_dbname" {
+#   description = "Database name for the Visits service"
+# }
+
+# variable "visits_dbuser" {
+#   description = "Database user for the Visits service"
+# }
+
+# #
+# # VETS SERVICE
+# #
+# variable "vets_service_release_name" {
+#   description = "Name of the Helm release for the Spring PetClinic Vets service"
+# }
+
+# variable "vets_service_chart_path" {
+#   description = "Path to the Helm chart for the Spring PetClinic Vets service"
+# }
+
+# variable "vets_service_chart_version" {
+#   description = "Version of the Helm chart to use for deploying the Spring PetClinic Vets service"
+# }
+
+# variable "vets_service_values_file" {
+#   description = "Path to the Helm values.yaml file for the Spring PetClinic Vets service"
+# }
+
+# variable "vets_dbhost" {
+#   description = "Database host for the Vets service"
+# }
+
+# variable "vets_dbname" {
+#   description = "Database name for the Vets service"
+# }
+
+# variable "vets_dbuser" {
+#   description = "Database user for the Vets service"
+# }
