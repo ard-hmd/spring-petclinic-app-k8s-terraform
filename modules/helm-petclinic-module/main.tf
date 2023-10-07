@@ -79,11 +79,11 @@ resource "kubernetes_secret" "visits_db_mysql" {
 }
 
 # Resource to deploy a Helm release for the Spring PetClinic application
-resource "helm_release" "my_release" {
-  name      = var.helm_release_name
+resource "helm_release" "api_gateway_service" {
+  name      = var.api_gateway_service_release_name
   namespace = var.namespace
-  chart     = var.helm_chart_path
-  version   = var.helm_chart_version
+  chart     = var.api_gateway_service_chart_path
+  version   = var.api_gateway_service_chart_version
 
   set {
     name  = "namespace"
@@ -115,19 +115,23 @@ resource "helm_release" "my_release" {
     value = join("\\,", local.all_public_subnets)
   }
 
-  set {
-    name  = "visits.dbhost"
-    value = var.visits_dbhost
-  }
+  values = [file(var.api_gateway_service_values_file)]
+}
+
+resource "helm_release" "customers_service" {
+  name      = var.customers_service_release_name
+  namespace = var.namespace
+  chart     = var.customers_service_chart_path
+  version   = var.customers_service_chart_version
 
   set {
-    name  = "visits.dbname"
-    value = var.visits_dbname
+    name  = "namespace"
+    value = var.namespace
   }
-
+  
   set {
-    name  = "visits.dbuser"
-    value = var.visits_dbuser
+    name  = "repository_prefix"
+    value = var.repository_prefix
   }
 
   set {
@@ -145,6 +149,25 @@ resource "helm_release" "my_release" {
     value = var.customers_dbuser
   }
 
+  values = [file(var.customers_service_values_file)]
+}
+
+resource "helm_release" "vets_service" {
+  name      = var.vets_service_release_name
+  namespace = var.namespace
+  chart     = var.vets_service_chart_path
+  version   = var.vets_service_chart_version
+
+  set {
+    name  = "namespace"
+    value = var.namespace
+  }
+
+  set {
+    name  = "repository_prefix"
+    value = var.repository_prefix
+  }
+
   set {
     name  = "vets.dbhost"
     value = var.vets_dbhost
@@ -159,5 +182,40 @@ resource "helm_release" "my_release" {
     name  = "vets.dbuser"
     value = var.vets_dbuser
   }
-  values = [file(var.helm_values_file)]
+
+  values = [file(var.vets_service_values_file)]
+}
+
+resource "helm_release" "visits_service" {
+  name      = var.visits_service_release_name
+  namespace = var.namespace
+  chart     = var.visits_service_chart_path
+  version   = var.visits_service_chart_version
+
+  set {
+    name  = "namespace"
+    value = var.namespace
+  }
+
+  set {
+    name  = "repository_prefix"
+    value = var.repository_prefix
+  }
+
+  set {
+    name  = "visits.dbhost"
+    value = var.visits_dbhost
+  }
+
+  set {
+    name  = "visits.dbname"
+    value = var.visits_dbname
+  }
+
+  set {
+    name  = "visits.dbuser"
+    value = var.visits_dbuser
+  }
+
+  values = [file(var.visits_service_values_file)]
 }

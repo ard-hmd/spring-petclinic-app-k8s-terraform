@@ -1,0 +1,13 @@
+# Namespace where the application will be deployed
+namespace: "qa"
+
+# Prefix for the repository where Helm charts are hosted
+repository_prefix: "myapp"
+
+vets:
+  # Hostname or IP address of the database server for the 'vets' service
+  dbhost: "vets-db-host"
+  # Name of the database for the 'vets' service
+  dbname: "vets-db-name"
+  # Username for connecting to the 'vets' database
+  dbuser: "vets-db-user"

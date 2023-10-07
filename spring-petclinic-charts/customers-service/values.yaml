@@ -1,0 +1,13 @@
+# Namespace where the application will be deployed
+namespace: "qa"
+
+# Prefix for the repository where Helm charts are hosted
+repository_prefix: "myapp"
+
+customers:
+  # Hostname or IP address of the database server for the 'customers' service
+  dbhost: "customers-db-host"
+  # Name of the database for the 'customers' service
+  dbname: "customers-db-name"
+  # Username for connecting to the 'customers' database
+  dbuser: "customers-db-user"
