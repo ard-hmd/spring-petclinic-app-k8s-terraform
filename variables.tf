@@ -121,10 +121,10 @@ variable "mysql_root_password" {
 #   type        = string
 # }
 
-# variable "repository_prefix" {
-#   description = "Registry repo prefix"
-#   type        = string
-# }
+variable "repository_prefix" {
+  description = "Registry repo prefix"
+  type        = string
+}
 
 # variable "fqdn" {
 #   description = "Fully Qualified Domain Name"
