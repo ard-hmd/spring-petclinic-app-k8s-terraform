@@ -1,3 +1,6 @@
+# Terraform Provider Configuration
+# This section defines the required Terraform providers and their versions.
+
 terraform {
   required_providers {
     aws = {
