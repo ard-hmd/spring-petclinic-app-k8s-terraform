@@ -1,3 +1,6 @@
+# AWS Identity and IAM Resources
+# These resources are related to AWS identity and IAM.
+
 # Retrieve current AWS account identity
 data "aws_caller_identity" "current" {}
 
@@ -14,6 +17,9 @@ locals {
   oidc_split     = split("/", data.aws_eks_cluster.selected.identity[0].oidc[0].issuer)
   oidc_id        = local.oidc_split[length(local.oidc_split) - 1]
 }
+
+# IAM Policy and Role for ALB Controller
+# These resources are related to IAM policies and roles for the ALB controller.
 
 # Create an IAM policy for the ALB controller
 resource "aws_iam_policy" "alb_controller" {
@@ -37,6 +43,9 @@ resource "aws_iam_role_policy_attachment" "alb_controller" {
   role       = aws_iam_role.alb_controller.name
 }
 
+# Kubernetes Resources
+# These resources are related to Kubernetes.
+
 # Create a Kubernetes ServiceAccount for the ALB controller
 resource "kubernetes_service_account" "alb_controller" {
   metadata {
@@ -48,7 +57,9 @@ resource "kubernetes_service_account" "alb_controller" {
   }
 }
 
-# Deploy the ALB controller using Helm
+# Helm Release for ALB Controller
+# This resource deploys the ALB controller using Helm.
+
 resource "helm_release" "alb_controller" {
   name       = "aws-load-balancer-controller"
   namespace  = "kube-system"

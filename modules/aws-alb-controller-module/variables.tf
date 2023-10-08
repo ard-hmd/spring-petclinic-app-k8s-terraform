@@ -1,3 +1,6 @@
+# EKS Cluster and ALB Controller Variables
+# These variables are related to the EKS cluster and the AWS ALB controller.
+
 variable "eks_cluster_name" {
   description = "Name of the EKS cluster"
 }
