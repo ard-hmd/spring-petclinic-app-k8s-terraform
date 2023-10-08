@@ -93,9 +93,13 @@ resource "helm_release" "api_gateway_service" {
     value = each.value
   }
   
+  # set {
+  #   name  = "alb.tags"
+  #   value = "Name=${var.alb_name}-${each.value}"
+  # }
   set {
     name  = "alb.tags"
-    value = "Name=${var.alb_name}-${each.value}"
+    value = "Name=${var.alb_name}"
   }
 
   set {
@@ -105,6 +109,7 @@ resource "helm_release" "api_gateway_service" {
 
   set {
     name  = "ingress.host"
+    # value = "${var.record_name}-${each.value}.${var.domain_name}"
     value = "${var.fqdn}"
   }
 

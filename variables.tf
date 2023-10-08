@@ -95,11 +95,15 @@ variable "alb_name" {
   description = "Name of the Application Load Balancer"
   type        = string
 }
-
-variable "fqdn" {
-  description = "Fully Qualified Domain Name"
+variable "dname" {
+  description = "Name of the Application Load Balancer"
   type        = string
 }
+
+# variable "fqdn" {
+#   description = "Fully Qualified Domain Name"
+#   type        = string
+# }
 
 variable "certificateArn" {
   description = "ARN of the ACM certificate"

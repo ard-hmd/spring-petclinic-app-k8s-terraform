@@ -47,6 +47,15 @@ variable "fqdn" {
   description = "Base Fully Qualified Domain Name"
 }
 
+variable "domain_name" {
+  description = "Base Fully Qualified Domain Name"
+}
+
+variable "record_name" {
+  description = "Base Fully Qualified Domain Name"
+}
+
+
 variable "certificateArn" {
   description = "ARN of the ACM certificate"
 }

@@ -23,12 +23,15 @@ module "helm_petclinic_module" {
   repository_prefix   = var.repository_prefix
 
   # Variables for the API Gateway service
+  domain_name = var.domain_name
+  record_name = "${var.record_name}-${each.value}"
   api_gateway_service_release_name  = var.api_gateway_service_release_name
   api_gateway_service_chart_path    = var.api_gateway_service_chart_path
   api_gateway_service_chart_version = var.api_gateway_service_chart_version
   api_gateway_service_values_file   = var.api_gateway_service_values_file
   alb_name                          = "${var.alb_name}-${each.value}"
-  fqdn                              = var.fqdn
+  # fqdn                              = var.fqdn
+  fqdn                              = "${var.record_name}-${each.value}.${var.dname}"
   certificateArn                    = var.certificateArn
 
   # Variables for the Customers service

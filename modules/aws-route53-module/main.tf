@@ -2,7 +2,7 @@
 data "aws_lb" "this" {
   for_each = toset(var.namespace)
   tags = {
-    Name = "${var.alb_name}-${each.value}"
+    Name = "${var.alb_name}"
   }
 }
 
@@ -15,7 +15,7 @@ data "aws_route53_zone" "selected" {
 resource "aws_route53_record" "alb_record" {
   for_each = toset(var.namespace)
   zone_id = data.aws_route53_zone.selected.zone_id
-  name    = "${var.record_name}-${each.value}"
+  name    = "${var.record_name}"
   type    = "A"
 
   alias {
