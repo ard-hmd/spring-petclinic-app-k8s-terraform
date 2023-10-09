@@ -87,6 +87,25 @@ resource "kubernetes_secret" "visits_db_mysql" {
 }
 
 # Deploy Helm releases
+resource "helm_release" "inital_config" {
+  for_each = toset(var.namespace)
+  name      = "${var.inital_config_release_name}-${each.value}"
+  namespace = each.value
+  chart     = var.inital_config_chart_path
+  version   = var.inital_config_chart_version
+
+  set {
+    name  = "namespace"
+    value = each.value
+  }
+
+  values = [file(var.inital_config_values_file)]
+  
+  depends_on = [kubernetes_namespace.ns]
+}
+
+
+# Deploy Helm releases
 resource "helm_release" "api_gateway_service" {
   for_each = toset(var.namespace)
   name      = "${var.api_gateway_service_release_name}-${each.value}"
@@ -126,7 +145,7 @@ resource "helm_release" "api_gateway_service" {
 
   values = [file(var.api_gateway_service_values_file)]
 
-  depends_on = [kubernetes_namespace.ns]
+  depends_on = [helm_release.inital_config]
 }
 
 resource "helm_release" "customers_service" {
@@ -163,7 +182,7 @@ resource "helm_release" "customers_service" {
 
   values = [file(var.customers_service_values_file)]
 
-  depends_on = [helm_release.api_gateway_service]
+  depends_on = [helm_release.inital_config]
 }
 
 resource "helm_release" "vets_service" {
@@ -200,7 +219,7 @@ resource "helm_release" "vets_service" {
 
   values = [file(var.vets_service_values_file)]
 
-  depends_on = [helm_release.api_gateway_service]
+  depends_on = [helm_release.inital_config]
 }
 
 resource "helm_release" "visits_service" {
@@ -237,5 +256,5 @@ resource "helm_release" "visits_service" {
 
   values = [file(var.visits_service_values_file)]
 
-  depends_on = [helm_release.api_gateway_service]
+  depends_on = [helm_release.inital_config]
 }

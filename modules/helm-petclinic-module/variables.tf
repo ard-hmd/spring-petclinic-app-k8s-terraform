@@ -26,6 +26,25 @@ variable "mysql_root_password" {
   description = "Root password for MySQL used in various databases"
 }
 
+# Inital Config Variables
+# These variables are specific to the Spring PetClinic Inital Config.
+
+variable "inital_config_release_name" {
+  description = "Name of the Helm release for the Spring PetClinic API Gateway service"
+}
+
+variable "inital_config_chart_path" {
+  description = "Path to the Helm chart for the Spring PetClinic API Gateway service"
+}
+
+variable "inital_config_chart_version" {
+  description = "Version of the Helm chart to use for deploying the Spring PetClinic API Gateway service"
+}
+
+variable "inital_config_values_file" {
+  description = "Path to the Helm values.yaml file for the Spring PetClinic API Gateway service"
+}
+
 # API Gateway Service Variables
 # These variables are specific to the Spring PetClinic API Gateway service.
 

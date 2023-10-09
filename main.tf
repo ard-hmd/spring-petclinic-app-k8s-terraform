@@ -33,6 +33,12 @@ module "helm_petclinic_module" {
   fqdn                              = "${var.record_name}-${each.value}.${var.cleaned_domain_name}"
   certificateArn                    = var.certificateArn
 
+  # Variables for the Inital Config
+  inital_config_release_name  = var.inital_config_release_name
+  inital_config_chart_path    = var.inital_config_chart_path
+  inital_config_chart_version = var.inital_config_chart_version
+  inital_config_values_file   = var.inital_config_values_file
+
   # Variables for the Customers service
   customers_service_release_name  = var.customers_service_release_name
   customers_service_chart_path    = var.customers_service_chart_path

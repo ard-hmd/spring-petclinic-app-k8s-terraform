@@ -87,6 +87,27 @@ variable "certificateArn" {
   type        = string
 }
 
+# Spring PetClinic Inital Config
+variable "inital_config_release_name" {
+  description = "Name of the Helm release for the Spring PetClinic Initial Config."
+  type        = string
+}
+
+variable "inital_config_chart_path" {
+  description = "Path to the Helm chart for the Spring PetClinic Initial Config."
+  type        = string
+}
+
+variable "inital_config_chart_version" {
+  description = "Version of the Helm chart to use for deploying the Spring PetClinic Initial Config."
+  type        = string
+}
+
+variable "inital_config_values_file" {
+  description = "Path to the Helm values.yaml file for the Spring PetClinic Initial Config."
+  type        = string
+}
+
 # Spring PetClinic API Gateway Service Configuration
 variable "api_gateway_service_release_name" {
   description = "Name of the Helm release for the Spring PetClinic API Gateway service."
