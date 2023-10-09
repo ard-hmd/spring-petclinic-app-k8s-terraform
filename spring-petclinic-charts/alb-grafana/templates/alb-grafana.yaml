@@ -3,21 +3,21 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: grafana-ingress
-  namespace: grafana
+  namespace: {{ .Values.namespace }}
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: grafana-alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/subnets: subnet-023422e2c23d5c4a9,subnet-0111fb99586851d22
+    alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-3:414147595918:certificate/bb7e117b-ba23-4c36-aee1-d6d6fb1a384c
-    # alb.ingress.kubernetes.io/security-groups: ${ALB_SECURITY_GROUP_ID}
+    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.certificateArn }}
     alb.ingress.kubernetes.io/healthcheck-port: "3000"
     alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/tags: {{ .Values.alb.tags }}
 spec:
   ingressClassName: alb
   rules:
-    - host: www.ahermand.fr
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: /
