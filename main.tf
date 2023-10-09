@@ -95,3 +95,95 @@ module "aws_route53_module" {
 
   depends_on = [module.helm_petclinic_module]
 }
+
+resource "kubernetes_namespace" "prometheus" {
+  metadata {
+    name = "prometheus"
+  }
+}
+
+resource "helm_release" "prometheus" {
+  name       = "prometheus"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "prometheus"
+  namespace  = kubernetes_namespace.prometheus.metadata[0].name
+
+  set {
+    name  = "alertmanager.persistentVolume.storageClass"
+    value = "gp2"
+  }
+
+  set {
+    name  = "server.persistentVolume.storageClass"
+    value = "gp2"
+  }
+
+  depends_on = [kubernetes_namespace.prometheus]
+}
+
+# Créez le namespace Grafana
+resource "kubernetes_namespace" "grafana" {
+  metadata {
+    name = "grafana"
+  }
+}
+
+# Configuration du ConfigMap pour Grafana
+resource "kubernetes_config_map" "grafana_config" {
+  metadata {
+    name      = "grafana-config"
+    namespace = kubernetes_namespace.grafana.metadata[0].name
+  }
+
+  data = {
+    "datasources.yaml" = <<-EOT
+      datasources:
+        datasources.yaml:
+          apiVersion: 1
+          datasources:
+            - name: Prometheus
+              type: prometheus
+              url: http://prometheus-server.prometheus.svc.cluster.local
+              access: proxy
+              isDefault: true
+    EOT
+  }
+
+  depends_on = [kubernetes_namespace.grafana]
+}
+
+# Installation de Grafana avec Helm
+resource "helm_release" "grafana" {
+  name       = "grafana"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "grafana"
+  namespace  = kubernetes_namespace.grafana.metadata[0].name
+
+  set {
+    name  = "persistence.storageClass"
+    value = "gp2"
+  }
+
+  set {
+    name  = "persistence.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "adminPassword"
+    value = "YOUR_PASSWORD"  # Remplacez par votre mot de passe d'administration Grafana
+  }
+
+  set {
+    name  = "service.type"
+    value = "NodePort"
+  }
+
+  depends_on = [kubernetes_namespace.grafana, kubernetes_config_map.grafana_config]
+}
+
+resource "helm_release" "alb_grafana" {
+  name       = "alb-grafana-release"  # Nom de votre déploiement Helm
+  chart      = "./spring-petclinic-charts/alb-grafana"  # Nom du chart à déployer
+  namespace  = "kub "  # Le namespace Kubernetes dans lequel vous souhaitez déployer le chart
+}
