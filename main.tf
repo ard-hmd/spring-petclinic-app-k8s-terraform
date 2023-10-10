@@ -95,21 +95,3 @@ module "aws_route53_module" {
 
   depends_on = [module.helm_petclinic_module]
 }
-
-module "monitoring_module" {
-  source = "./modules/monitoring-module"
-
-  vpc_name                    = var.vpc_name
-  az_a_subnet_name            = var.az_a_subnet_name
-  az_b_subnet_name            = var.az_b_subnet_name
-  alb_grafana_release_name    = var.alb_grafana_release_name
-  alb_grafana_chart_path      = var.alb_grafana_chart_path
-  alb_grafana_chart_version   = var.alb_grafana_chart_version
-  alb_grafana_values_file     = var.alb_grafana_values_file
-  alb_grafana_record_name     = var.alb_grafana_record_name
-  alb_grafana_domain_name     = var.alb_grafana_domain_name
-  alb_grafana_alb_name        = "${var.alb_grafana_alb_name}"
-  alb_grafana_cleaned_domain_name = var.alb_grafana_cleaned_domain_name
-  alb_grafana_fqdn            = "${var.alb_grafana_record_name}.${var.alb_grafana_cleaned_domain_name}"
-  alb_grafana_certificateArn  = var.alb_grafana_certificateArn
-}
